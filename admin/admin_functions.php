@@ -54,7 +54,7 @@ function mfp_dev_page()
 ?>
 
   <div class="container">
-    <h1>MFD Developer Tools</h1>
+    <h1>MFP Developer Tools</h1>
     <p><strong>Plugin Version</strong>: <?php echo $plugin_data['Version']; ?></p>
     <p><strong>WP Version</strong>: <?php echo get_bloginfo('version') ?></p>
     <p><strong> Active Theme </strong>: <?php echo $theme->get('Name') ?></p>
@@ -112,9 +112,9 @@ function mfp_settings_page()
     <form action="options.php" method="post">
 
       <?php
-        settings_fields('mfp_settigs_group');
-        do_settings_sections('mfp_settings_page');
-        submit_button();
+      settings_fields('mfp_settings_group');
+      do_settings_sections('mfp_settings_page');
+      submit_button();
 
       ?>
 
@@ -125,10 +125,19 @@ function mfp_settings_page()
 
 
 // Register the Settings
-function mfp_register_settings(){
+function mfp_register_settings()
+{
   register_setting(
-    'mfp_settigs_group', //Options Group
-    'mfp_footer_credit' //Option Name
+    'mfp_settings_group', //Options Group
+    'mfp_footer_credit', //Option Name
+    'sanitize_text_field'
+  );
+
+  // register the footer text
+  register_setting(
+    'mfp_settings_group',
+    'mfp_footer_message',
+    'sanitize_text_field'
   );
 
   // Add section
@@ -147,16 +156,34 @@ function mfp_register_settings(){
     'mfp_settings_page',
     'mfp_main_section'
   );
+
+  // Add Text Input
+  add_settings_field(
+    'mfp_footer_message',
+    'Footer Message',
+    'mfp_footer_message_callback',
+    'mfp_settings_page',
+    'mfp_main_section'
+  );
 }
 
 add_action('admin_init', 'mfp_register_settings');
 
 // Checkbox Function
 
-function mfp_footer_credit_callback(){
+function mfp_footer_credit_callback()
+{
   $value = get_option('mfp_footer_credit');
 
   echo '<input type="checkbox" name="mfp_footer_credit" value="1"' . checked(1, $value, false) . '/>';
 }
-?>
 
+
+// Text function
+function mfp_footer_message_callback()
+{
+
+  $value = get_option('mfp_footer_message');
+
+  echo '<input type="text" name="mfp_footer_message" value="' . esc_attr($value) . '" class="regular-text" />';
+}

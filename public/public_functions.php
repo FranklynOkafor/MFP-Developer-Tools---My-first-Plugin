@@ -3,7 +3,8 @@ function mfp_add_to_footer()
 {
   $enabled = get_option('mfp_footer_credit');
   if ($enabled){
-    echo '<p>Site Optimized by MFP Developer Tools</p>';
+    $message = get_option('mfp_footer_message');
+    echo "<p> $message </p>";
   }
 }
 
