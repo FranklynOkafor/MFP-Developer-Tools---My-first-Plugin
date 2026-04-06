@@ -12,11 +12,11 @@ if (!defined('ABSPATH')){
   exit;
 }
 
+// DECLARING MY GLOBAL VARIABLES
+define('MFP_PLUGIN_FILE', __FILE__);
+
 require_once plugin_dir_path(__FILE__) . 'admin/admin_functions.php';
 require_once plugin_dir_path(__FILE__) . 'inc/hooks.php';
 require_once plugin_dir_path(__FILE__) . 'inc/shortcode.php';
 require_once plugin_dir_path(__FILE__) . 'public/public_functions.php';
 
-
-// DECLARING MY GLOBAL VARIABLES
-define('MFP_PLUGIN_FILE', __FILE__);

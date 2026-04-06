@@ -15,6 +15,39 @@ function admin_note()
 
 add_action('admin_notices', 'admin_note');
 
+// ENQUEUE SCRIPTS AND STYLES
+function mfp_admin_enqueue_scripts($hook) {
+  // Only load on our plugin's admin pages
+  $allowed_hooks = [
+    'toplevel_page_mfp-dev-tools',
+    'mfp-dev-tools_page_mfp-dev-dashboard',
+    'mfp-dev-tools_page_mfp_settings'
+  ];
+
+  if (!in_array($hook, $allowed_hooks)) {
+    return;
+  }
+
+  // Enqueue Admin CSS
+  wp_enqueue_style(
+    'mfp-admin-css',
+    plugin_dir_url(MFP_PLUGIN_FILE) . 'assets/css/admin.css',
+    [],
+    '1.0.0'
+  );
+
+  // Enqueue Admin JS
+  wp_enqueue_script(
+    'mfp-admin-js',
+    plugin_dir_url(MFP_PLUGIN_FILE) . 'assets/js/admin.js',
+    ['jquery'], // Dependency on jQuery
+    '1.0.0',
+    true // Load in footer
+  );
+}
+
+add_action('admin_enqueue_scripts', 'mfp_admin_enqueue_scripts');
+
 
 // ADMIN PAGES
 
@@ -53,14 +86,27 @@ function mfp_dev_page()
   $page_counts = wp_count_posts('page');
 ?>
 
-  <div class="container">
+  <div class="wrap mfp-admin-wrap">
     <h1>MFP Developer Tools</h1>
-    <p><strong>Plugin Version</strong>: <?php echo $plugin_data['Version']; ?></p>
-    <p><strong>WP Version</strong>: <?php echo get_bloginfo('version') ?></p>
-    <p><strong> Active Theme </strong>: <?php echo $theme->get('Name') ?></p>
-    <p><strong> Total Posts </strong>: <?= $counts->publish ?> </p>
-    <p><strong> Total Pages </strong>: <?= $page_counts->publish ?> </p>
-
+    <div class="mfp-dashboard-cards">
+      <div class="mfp-card">
+        <h3>🔌 Plugin Info</h3>
+        <p><strong>Version:</strong> <?php echo esc_html($plugin_data['Version']); ?></p>
+      </div>
+      <div class="mfp-card">
+        <h3>⚙️ WordPress Info</h3>
+        <p><strong>Version:</strong> <?php echo esc_html(get_bloginfo('version')); ?></p>
+      </div>
+      <div class="mfp-card">
+        <h3>🎨 Active Theme</h3>
+        <p><strong>Name:</strong> <?php echo esc_html($theme->get('Name')); ?></p>
+      </div>
+      <div class="mfp-card">
+        <h3>📝 Content Stats</h3>
+        <p><strong>Total Posts:</strong> <?php echo esc_html($counts->publish ?? 0); ?></p>
+        <p><strong>Total Pages:</strong> <?php echo esc_html($page_counts->publish ?? 0); ?></p>
+      </div>
+    </div>
   </div>
 
 
@@ -130,21 +176,22 @@ function mfp_register_settings()
   register_setting(
     'mfp_settings_group', //Options Group
     'mfp_footer_credit', //Option Name
-    'sanitize_text_field'
+    ['sanitize_text_field']
   );
 
   // register the footer text
   register_setting(
     'mfp_settings_group',
     'mfp_footer_message',
-    'sanitize_text_field'
+    ['sanitize_text_field']
+    
   );
 
   // Add section
   add_settings_section(
     'mfp_main_section',
     'Plugin Settings ',
-    null,
+    '__return_empty_string',
     'mfp_settings_page'
   );
 

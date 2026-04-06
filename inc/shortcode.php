@@ -1,4 +1,9 @@
 <?php
+
+if (!defined('ABSPATH')){
+  exit;
+}
+
 require_once ABSPATH . 'wp-admin/includes/plugin.php';
 
 function mfp_details_shortcode()
