@@ -90,19 +90,19 @@ function mfp_dev_page()
     <h1>MFP Developer Tools</h1>
     <div class="mfp-dashboard-cards">
       <div class="mfp-card">
-        <h3>🔌 Plugin Info</h3>
+        <h3>Plugin Info</h3>
         <p><strong>Version:</strong> <?php echo esc_html($plugin_data['Version']); ?></p>
       </div>
       <div class="mfp-card">
-        <h3>⚙️ WordPress Info</h3>
+        <h3>WordPress Info</h3>
         <p><strong>Version:</strong> <?php echo esc_html(get_bloginfo('version')); ?></p>
       </div>
       <div class="mfp-card">
-        <h3>🎨 Active Theme</h3>
+        <h3>Active Theme</h3>
         <p><strong>Name:</strong> <?php echo esc_html($theme->get('Name')); ?></p>
       </div>
       <div class="mfp-card">
-        <h3>📝 Content Stats</h3>
+        <h3>Content Stats</h3>
         <p><strong>Total Posts:</strong> <?php echo esc_html($counts->publish ?? 0); ?></p>
         <p><strong>Total Pages:</strong> <?php echo esc_html($page_counts->publish ?? 0); ?></p>
       </div>
@@ -185,7 +185,7 @@ function mfp_register_settings()
     'mfp_footer_message',
     ['sanitize_text_field']
     
-  );
+   );
 
   // Add section
   add_settings_section(
